@@ -39,26 +39,46 @@ Just make sure you change the paths in the bash commands accordingly.
 
 ```bash
 cd /opt/adproxy; # change if you used a different folder
-nodejs start.js 8080; # will start a proxy on (defaulted) port 8080
+nodejs ./bin/proxy; # will start a proxy on defaulted settings (localhost:8080)
 ```
+
+# Settings
+
+If you want to use customized parameters, these are the supported parameters and their functionality:
+
+- --host=<ip> where *ip* is an IPv4 or IPv6 address (e.g. *192.168.0.1*)
+- --port=<port> where *port* is a valid port number (e.g. *8080*)
+- --public=true will allow using the proxy from other hosts (defaulted). Use --public=false to only allow connections using the given *ip*.
+- --protocol=http will spawn an HTTP based proxy. Supported protocols are *http*, *socks5*.
+
+```bash
+# Example usage of customized parameters
+nodejs ./bin/proxy --host=192.168.0.1 --port=8080 --public=false --protocol=http
+```
+
 
 # Features
 
 - HTTP Proxy
 - Host config files support (aka **/etc/hosts**)
 - Adblock Plus filter list support ("without element hiding")
-- Incremental cache updates for changed files in **./adblockplus.d**, **./host.d** or **./json.d**
+- Use the *./update.sh* (requires wget) to update all filter lists from predefined sources.
 
 
 # Work-in-progress (aka still not working)
 
+- HTTPS Proxy (automatic SSL certificate issueing, maybe via sniffing (aka nulling bug))
 - SOCKS5 Proxy
-- Asynchronous cache file database for faster restart
-- Support for JSON config files
-- Support for AdBlock Plus filter rulesets, based on their fucked up RegExp system
+- Support for ABP rules with $variable identifiers (requires HTML code parsing, which would slow down proxy)
 
 
 # Usage
+
+If you want to use another machine as a Gateway (for example on a Raspberry Pi), you can start the Proxy
+on the machine with a reachable IP (e.g. *--host=192.168.x.x*) so that your own machine can connect
+to it. If you don't know the IP of the machine (or want to host it on a domain-reachable server) you
+can simply set the *--public=true* flag. See [Settings](#Settings) for more details.
+
 
 ## Ubuntu (Gnome Shell)
 
@@ -89,3 +109,4 @@ If you started the Proxy setting a different port, please change that accordingl
 
 Documentation about setup on other Operating Systems.
 **Contributions welcomed**.
+
